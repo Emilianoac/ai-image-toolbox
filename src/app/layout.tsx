@@ -21,7 +21,14 @@ interface Props {
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${openSans.className} antialiased bg-app-light-200 dark:bg-app-dark-300`}>
+      <body 
+        className={`
+          ${openSans.className} 
+          antialiased 
+          bg-app-light-200 dark:bg-app-dark-200
+          text-black dark:text-white
+        `
+        }>
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
