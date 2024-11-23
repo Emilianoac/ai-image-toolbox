@@ -19,7 +19,7 @@ interface Props {
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
     <html lang="es">
-      <body className={`${openSans} antialiased`}>
+      <body className={`${openSans.className} antialiased`}>
         {children}
       </body>
     </html>
