@@ -24,14 +24,14 @@ export default function GridPattern({ ...props }: GridPatternProps) {
         return;
       }
 
-      const gridSize = 10;
+      const gridSize = 8;
       const canvasWidth = canvas.width;
       const canvasHeight = canvas.height;
 
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
       ctx.strokeStyle = "gray"; 
-      ctx.lineWidth = 0.2; 
+      ctx.lineWidth = 0.1; 
 
       for (let x = 0; x <= canvasWidth; x += gridSize) {
         ctx.beginPath();
