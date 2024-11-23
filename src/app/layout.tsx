@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
+import AppNavbar from "@/components/globals/AppNavbar";
+import { ThemeProvider } from "@/components/globals/ThemeProvider";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -18,9 +20,17 @@ interface Props {
 
 export default function RootLayout({ children }: Readonly<Props>) {
   return (
-    <html lang="es">
-      <body className={`${openSans.className} antialiased`}>
-        {children}
+    <html lang="es" suppressHydrationWarning>
+      <body className={`${openSans.className} antialiased bg-app-light-200 dark:bg-app-dark-300`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AppNavbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
