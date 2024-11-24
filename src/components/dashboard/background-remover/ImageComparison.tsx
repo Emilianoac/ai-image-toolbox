@@ -1,6 +1,7 @@
 import { useState, useEffect} from "react";
 import Styles from "./ImageComparison.module.css";
 import Image from "next/image";
+import { FaPlus, FaMinus } from "react-icons/fa";
 
 const sampleOriginalImage = "/images/examples/background-remover/maneki-neko.webp";
 const sampleResultImage = "/images/examples/background-remover/no-bg-image.png";
@@ -58,14 +59,21 @@ export default function ImageComparison({
         />
       </div>
 
-      <input
-        type="range"
-        min="0"
-        max="100"
-        value={sliderValue}
-        onChange={handleSliderChange}
-        className="mt-4"
-      />
+      <div className="flex items-center gap-2 mt-2">
+        <span className="text-sm">
+          <FaMinus />
+        </span>
+        <input
+          type="range"
+          min="0"
+          max="100"
+          value={sliderValue}
+          onChange={handleSliderChange}
+        />
+        <span className="text-sm">
+          <FaPlus />
+        </span>
+      </div>
     </div>
   )
 }
