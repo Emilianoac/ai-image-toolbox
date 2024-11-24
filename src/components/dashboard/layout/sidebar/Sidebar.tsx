@@ -17,13 +17,13 @@ export default function Sidebar() {
       title: "Imagen a 3D",
       icon: IconImageTo3D,
       href: "/dashboard/image-to-3d",
-      enabled: true
+      enabled: false
     },
     {
       title: "Generar imagen",
       icon: IconGenerateImage,
       href: "/dashboard/generate-image",
-      enabled: true
+      enabled: false
     }
   ];
 
