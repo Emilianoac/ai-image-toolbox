@@ -30,8 +30,8 @@ export default function RootLayout({ children }: Readonly<Props>) {
         `
         }>
         <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
+          attribute="data-theme"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
