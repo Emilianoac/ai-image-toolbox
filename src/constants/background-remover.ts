@@ -5,8 +5,8 @@ const examplesImages = [
     src: "/images/examples/background-remover/man.webp",
   },
   {
-    title: "Maneki Neko",
-    src: "/images/examples/background-remover/maneki-neko.webp",
+    title: "Daruma",
+    src: "/images/examples/background-remover/daruma.webp",
   },
   {
     title: "Audifonos",
@@ -21,7 +21,7 @@ const examplesImages = [
     src: "/images/examples/background-remover/pig.webp",
   },
   {
-    title: "Gato sentado",
+    title: "Gato con traje de gala",
     src: "/images/examples/background-remover/cat.webp",
   }
 ]
