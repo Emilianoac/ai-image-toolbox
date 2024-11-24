@@ -1,13 +1,14 @@
 import { useState, useEffect } from "react";
 import Styles from  "./ImageResult.module.css";
 import Image from "next/image";
+import ImageComparison from "./ImageComparison";
 
 interface ImageComparisonProps {
   imageWithBg: string;
   imageWithoutBg: string;
 }
 
-export default function ImageComparison({ imageWithBg, imageWithoutBg }: ImageComparisonProps) {
+export default function ImageResult({ imageWithBg, imageWithoutBg }: ImageComparisonProps) {
   const [newWidth, setNewWidth] = useState(500);
   const [newHeight, setNewHeight] = useState(500);
 
@@ -39,7 +40,12 @@ export default function ImageComparison({ imageWithBg, imageWithoutBg }: ImageCo
           <p className={`${Styles['loading-text']}`}> Eliminando el fondo...</p>
         </div>
         :
-        <Image src={imageWithoutBg} width={newWidth} height={newHeight} alt="Resultado"/>
+        <ImageComparison  
+          originalImage={imageWithBg}
+          resultImage={imageWithoutBg}
+          width={newWidth}
+          height={newHeight}
+        />
       }
     </div>
   );

@@ -1,6 +1,4 @@
 .result-container {
-  background-image: url("/images/png-pattern.webp");
-  @apply bg-top bg-cover bg-no-repeat;
   @apply rounded-md overflow-hidden;
 
   .result-loading {
