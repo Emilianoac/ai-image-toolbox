@@ -1,12 +1,12 @@
 
 .upload-image-container {
-  @apply w-full text-center rounded-md shadow-lg p-4 md:p-10;
+  @apply w-full text-center rounded-md shadow-lg p-4 md:p-10 max-h-[90vh] overflow-y-auto;
   @apply bg-app-light-100;
   @apply dark:bg-app-dark-200;
 }
 
 .upload-image-label {
-  @apply max-w-[300px] my-20 text-base md:text-xl font-semibold;
+  @apply max-w-[300px] my-10 text-base md:text-xl font-semibold;
   @apply bg-app-primary text-black;
   @apply flex items-center justify-center;
   @apply px-4 py-2 rounded-md mx-auto cursor-pointer;

@@ -4,6 +4,7 @@ import Image from "next/image";
 import { FaUpload } from "react-icons/fa";
 import { examplesImages } from "@/constants/background-remover";
 import Styles from "./UploadImage.module.css";
+import ImageComparison from "./ImageComparison";
 
 interface UploadImageProps {
   setUserImage: (image: string) => void;
@@ -27,11 +28,14 @@ export default function UploadImage({ setUserImage }: UploadImageProps) {
   }
 
   return (
+
     <div className={`${Styles['upload-image-container']}`}>
-      <h1 className="text-xl md:text-3xl font-bold">Añade una imagen para eliminar el fondo</h1>
+      <h1 className="text-xl md:text-2xl font-bold mb-8">Elimina el fondo de tus imagenes en segundos</h1>
+
+      <ImageComparison/>
 
       <label className={`${Styles['upload-image-label']}`} htmlFor="user_image">
-        Añade una imagen <FaUpload className="inline-block ml-2" />
+        Añadir una imagen <FaUpload className="inline-block ml-2" />
       </label>
       <input 
         type="file" 
@@ -43,7 +47,7 @@ export default function UploadImage({ setUserImage }: UploadImageProps) {
       />
 
       <span className="text-sm mb-3 block">¿Sin imagenes? prueba con una de estas.</span>
-      <div className="grid grid-cols-6 gap-2">
+      <div className="grid grid-cols-6 gap-2 max-w-[400px] mx-auto">
         {
           examplesImages.map((image, index) => (
             <Image
