@@ -1,6 +1,8 @@
+import BackgroundRemoverClient from "@/components/dashboard/background-remover/BackgroundRemoverClient";
 
 export default function page() {
+
   return (
-    <div>Eliminar Fondo imagenes</div>
+    <BackgroundRemoverClient/>
   )
 }

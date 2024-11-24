@@ -1,0 +1,11 @@
+
+.actionsList {
+  @apply flex flex-row md:flex-col gap-3;
+}
+
+.action {
+  @apply p-4 rounded-md block shadow-md text-sm;
+  @apply text-white bg-black;
+  @apply dark:text-black dark:bg-white;
+  @apply hover:opacity-80;
+}
