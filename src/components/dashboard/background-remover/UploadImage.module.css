@@ -1,6 +1,6 @@
 
 .upload-image-container {
-  @apply p-4 md:p-10 max-h-[90vh] overflow-y-auto text-center;
+  @apply p-4 md:p-10 max-h-full lg:max-h-[85vh] overflow-y-auto text-center;
 }
 
 .upload-image-label {
