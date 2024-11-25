@@ -7,7 +7,12 @@ const appMetaData = {
   removeBackground: {
     title: "Eliminar Fondo de Imágenes",
     description: `Elimina el fondo de tus imágenes en segundos. ¡Prueba ahora y lleva tus fotos al siguiente nivel!`,
+  },
+  generateImage: {
+    title: "Generar Imágenes",
+    description: `Genera imágenes con inteligencia artificial. ¡Prueba ahora y lleva tus imágenes al siguiente nivel!`,
   }
+
 }
 
 export default appMetaData;
