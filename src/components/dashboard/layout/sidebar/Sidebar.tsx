@@ -3,6 +3,7 @@ import IconRemoveBackground from "@/components/icons/IconRemoveBackground";
 import IconImageTo3D from "@/components/icons/IconImageTo3D";
 import IconGenerateImage from "@/components/icons/IconGenerateImage";
 import SidebarMenuItem from "./SidebarMenuItem";
+import Styles from "./Sidebar.module.css";
 
 export default function Sidebar() {
 
@@ -28,28 +29,24 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside
-      className="
-        bg-app-light-100 dark:bg-app-dark-200 
-        border-r border-app-light-300 dark:border-app-dark-100
-        h-full py-10
-      "
-    >
-      <ul>
-        {SidebarMenuItems.map((item, index) => {
-          const Icon = item.icon;
-          return (
-            <SidebarMenuItem
-              key={index}
-              href={item.href}
-              title={item.title}
-              enabled={item.enabled}
-            >
-              <Icon width={28} height={28} />
-            </SidebarMenuItem>
-          );
-        })}
-      </ul>
+    <aside className={`${Styles['dashboard-sidebar']}`}>
+      <div className="container mx-auto">
+        <ul className={`${Styles['dashboard-sidebar__menu']}`}>
+          {SidebarMenuItems.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <SidebarMenuItem
+                key={index}
+                href={item.href}
+                title={item.title}
+                enabled={item.enabled}
+              >
+                <Icon width={28} height={28} />
+              </SidebarMenuItem>
+            );
+          })}
+        </ul>
+      </div>
     </aside>
   )
 }

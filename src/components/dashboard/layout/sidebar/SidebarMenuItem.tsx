@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Styles from "./Sidebar.module.css";
 
 interface SidebarMenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
   title: string;
@@ -16,10 +17,9 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
   return (
     <li 
       className={`
-        border-r-4 
-        ${!enabled ? "cursor-not-allowed opacity-10" : "cursor-pointer hover:opacity-100"}
-        ${pathname === href ? "border-app-primary" : "border-transparent opacity-40"}
-        mb-4 last-of-type:mb-0
+        ${Styles["dashboard-sidebar__menu-item"]}
+        ${!enabled && Styles.disabled}
+        ${pathname === href && Styles.active}
       `}
       {...props}
       >
@@ -30,13 +30,23 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
             title={title}
             className="flex items-center justify-center"
           >
-            {children}
+            <div className="flex justify-center flex-col items-center">  
+              {children}
+              <span className="lg:hidden text-xs mt-1 text-center line-clamp-1">
+                {title}
+              </span>
+            </div>
           </Link>
         ) : (
           <div 
             title={title}
             className="flex items-center justify-center">
-            {children}
+              <div className="flex justify-center flex-col items-center">  
+                {children}
+                <span className="lg:hidden text-xs mt-1 text-center line-clamp-1">
+                  {title}
+                </span>
+              </div>
           </div>
         )
       }

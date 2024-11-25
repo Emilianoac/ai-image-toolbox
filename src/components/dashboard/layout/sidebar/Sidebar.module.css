@@ -1,0 +1,28 @@
+.dashboard-sidebar {
+  @apply fixed bottom-0 left-0 w-full h-auto lg:h-full py-1 lg:py-10 z-[999];
+  @apply bg-app-light-100;
+  @apply lg:relative lg:border-r border-r-0 border-app-light-300 border-t lg:border-t-0;
+  @apply dark:bg-app-dark-200 dark:border-app-dark-100;
+}
+
+.dashboard-sidebar__menu {
+  @apply flex flex-row lg:flex-col items-center justify-between gap-4;
+  @apply p-2 lg:p-0;
+  @apply w-full;
+  
+}
+
+.dashboard-sidebar__menu-item {
+
+  @apply border-r-4 w-full;
+  @apply border-transparent opacity-40;
+  @apply cursor-pointer hover:opacity-100;
+}
+
+.dashboard-sidebar__menu-item.disabled {
+  @apply cursor-not-allowed opacity-10
+}
+
+.dashboard-sidebar__menu-item.active {
+  @apply border-transparent lg:border-app-primary opacity-100;
+}
