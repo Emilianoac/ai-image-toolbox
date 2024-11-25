@@ -12,7 +12,7 @@ export default function AppNavbar() {
       ">
         <div className="flex justify-between w-full mx-auto">
           <Link href="/dashboard/remove-background" className="hover:opacity-85">
-            <AppLogo className="max-w-[210px]"/>
+            <AppLogo className="max-w-[160px] lg:max-w-[210px]"/>
           </Link>
           <div>
             <AppThemeToggle/>
