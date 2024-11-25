@@ -24,7 +24,7 @@ export default function Sidebar() {
       title: "Imagen a 3D",
       icon: IconImageTo3D,
       href: "/dashboard/image-to-3d",
-      enabled: false
+      enabled: true
     },
   ];
 
