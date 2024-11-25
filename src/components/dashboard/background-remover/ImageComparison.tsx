@@ -59,7 +59,7 @@ export default function ImageComparison({
         />
       </div>
 
-      <div className="flex items-center gap-2 mt-2">
+      <div className="flex items-center gap-2 mt-2 p-1">
         <span className="text-sm">
           <FaMinus />
         </span>
