@@ -14,17 +14,17 @@ export default function Sidebar() {
       enabled: true,
     },
     {
+      title: "Generar imagen",
+      icon: IconGenerateImage,
+      href: "/dashboard/generate-image",
+      enabled: true
+    },
+    {
       title: "Imagen a 3D",
       icon: IconImageTo3D,
       href: "/dashboard/image-to-3d",
       enabled: false
     },
-    {
-      title: "Generar imagen",
-      icon: IconGenerateImage,
-      href: "/dashboard/generate-image",
-      enabled: true
-    }
   ];
 
   return (
