@@ -23,7 +23,7 @@ export default function Sidebar() {
       title: "Generar imagen",
       icon: IconGenerateImage,
       href: "/dashboard/generate-image",
-      enabled: false
+      enabled: true
     }
   ];
 

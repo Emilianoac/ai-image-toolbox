@@ -1,6 +1,8 @@
 
+import GenerateImageClient from "@/components/dashboard/generate-image/GenerateImageClient";
+
 export default function page() {
   return (
-    <div>Generar Imagen</div>
+    <GenerateImageClient />
   )
 }
