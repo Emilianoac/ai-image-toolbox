@@ -29,7 +29,7 @@ export default function UploadImage({ setUserImage }: UploadImageProps) {
 
   return (
 
-    <div className={`${Styles['upload-image-container']}`}>
+    <div className={`${Styles['upload-image-container']} app-card`}>
       <h1 className="text-xl md:text-2xl font-bold mb-8">Elimina el fondo de tus imagenes en segundos</h1>
 
       <ImageComparison/>

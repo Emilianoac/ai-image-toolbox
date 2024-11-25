@@ -48,3 +48,11 @@ input[type="range"] {
     @apply cursor-pointer;
   }
 }
+
+.app-card {
+  @apply bg-app-light-100;
+  @apply shadow-lg;
+  @apply rounded-lg;
+  @apply p-4;
+  @apply dark:bg-app-dark-200;
+}
