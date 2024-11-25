@@ -18,6 +18,7 @@ input[type="number"],
 input[type="tel"],
 textarea {
   @apply block w-full px-3 py-2 rounded-lg;
+  @apply text-sm;
   @apply bg-app-light-100 border border-app-light-200;
   @apply focus:outline-none focus:ring-1 focus:ring-app-primary/40 focus:border-transparent;
   @apply dark:bg-app-dark-100 dark:border-app-dark-200;
