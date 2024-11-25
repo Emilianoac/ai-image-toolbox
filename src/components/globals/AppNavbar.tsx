@@ -1,5 +1,6 @@
 import AppLogo from "./AppLogo";
 import AppThemeToggle from "./AppThemeToggle";
+import Link from "next/link";
 
 export default function AppNavbar() {
   return (
@@ -10,7 +11,9 @@ export default function AppNavbar() {
         h-[50px] flex items-center px-4
       ">
         <div className="flex justify-between w-full mx-auto">
-          <AppLogo className="max-w-[210px]"/>
+          <Link href="/dashboard/remove-background" className="hover:opacity-85">
+            <AppLogo className="max-w-[210px]"/>
+          </Link>
           <div>
             <AppThemeToggle/>
           </div>
