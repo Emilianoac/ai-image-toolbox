@@ -15,10 +15,9 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
 
   return (
     <li 
-      
       className={`
         border-r-4 
-        ${!enabled && "cursor-not-allowed opacity-10"}
+        ${!enabled ? "cursor-not-allowed opacity-10" : "cursor-pointer hover:opacity-100"}
         ${pathname === href ? "border-app-primary" : "border-transparent opacity-40"}
         mb-4 last-of-type:mb-0
       `}
