@@ -10,7 +10,7 @@ export default function AppLogo({ className }: Readonly<AppLogoProps>) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <rect width="28" height="28" rx="14" fill="#F84BD3" />
+      <rect width="28" height="28" rx="14" className="fill-app-primary" />
       <path
         d="M14 6.15991L21.84 9.51991V18.4799L14 21.8399L6.16 18.4799V9.51991L14 6.15991Z"
         fill="white"
