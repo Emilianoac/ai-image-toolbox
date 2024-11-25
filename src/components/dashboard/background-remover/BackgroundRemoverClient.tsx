@@ -61,7 +61,7 @@ function ActionsList({ result, resetData }: ActionsListProps) {
           href={result}
           title="Descargar imagen"
           download={`result-${new Date().getTime()}.png`}
-          className={`${Styles.action}`}>
+          className="action-button">
           <FaDownload />
         </a>
       </li>
@@ -69,7 +69,7 @@ function ActionsList({ result, resetData }: ActionsListProps) {
         <button
           title="Eliminar imagen"
           onClick={() => resetData()}
-          className={`${Styles.action}`}>
+          className="action-button">
           <FaTrash />
         </button>
       </li>
