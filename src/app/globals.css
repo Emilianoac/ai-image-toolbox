@@ -6,3 +6,45 @@ body {
   font-family: "Open Sans", sans-serif;
   font-size: 16px;
 }
+
+label {
+  @apply block text-sm font-bold;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+textarea {
+  @apply block w-full px-3 py-2 rounded-lg;
+  @apply bg-app-light-100 border border-app-light-200;
+  @apply focus:outline-none focus:ring-1 focus:ring-app-primary/40 focus:border-transparent;
+  @apply dark:bg-app-dark-100 dark:border-app-dark-200;
+}
+
+input[type="range"] {
+  @apply block w-full;
+  @apply bg-app-light-300;
+  @apply h-2;
+  @apply appearance-none;
+  @apply rounded-lg;
+  @apply outline-none;
+  @apply transition-colors duration-200;
+  @apply dark:bg-app-dark-100;
+  &::-webkit-slider-thumb {
+    @apply appearance-none;
+    @apply w-4 h-4;
+    @apply bg-app-primary;
+    @apply rounded-full;
+    @apply cursor-pointer;
+  }
+
+  &::-moz-range-thumb {
+    @apply appearance-none;
+    @apply w-4 h-4;
+    @apply bg-app-primary;
+    @apply rounded-full;
+    @apply cursor-pointer;
+  }
+}
