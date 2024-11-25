@@ -7,7 +7,7 @@
 
 .upload-image-label {
   @apply max-w-[300px] my-10 text-base md:text-xl font-semibold;
-  @apply bg-app-primary text-black;
+  @apply bg-app-primary text-white;
   @apply flex items-center justify-center;
   @apply px-4 py-2 rounded-md mx-auto cursor-pointer;
 
