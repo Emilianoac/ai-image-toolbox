@@ -1,0 +1,24 @@
+.app-dropdown {
+  @apply relative;
+}
+
+.app-dropdown__list {
+  @apply absolute z-10 left-0 w-max;
+  @apply bg-app-light-100;
+  @apply p-2 mt-1 rounded-md;
+  @apply shadow-md;
+  @apply dark:bg-app-dark-200;
+}
+
+.app-dropdown__item {
+  @apply hover:bg-app-light-200;
+  @apply block text-xs rounded-md;
+  @apply px-4 py-2 mb-2;
+
+  @apply cursor-pointer;
+  @apply dark:hover:bg-app-dark-100;
+}
+
+.app-dropdown__item.current {
+  @apply bg-app-light-200 dark:bg-app-dark-100;
+}
