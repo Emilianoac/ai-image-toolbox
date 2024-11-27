@@ -1,0 +1,11 @@
+
+.add-image-container {
+  @apply p-4 md:p-10 max-h-full lg:max-h-[85vh] overflow-y-auto text-center relative;
+}
+
+.add-image-label {
+  @apply max-w-[300px] my-10 text-base md:text-xl font-semibold;
+  @apply bg-app-primary text-white;
+  @apply flex items-center justify-center;
+  @apply px-4 py-2 rounded-md mx-auto cursor-pointer;
+}
