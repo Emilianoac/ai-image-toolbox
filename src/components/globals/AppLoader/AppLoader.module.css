@@ -15,8 +15,9 @@
 }
 
 .app-loader-loader__text {
-  @apply text-white font-semibold mt-4 select-none;
-
+  @apply mt-4 select-none py-1 px-2 rounded-md text-sm;
+  @apply bg-app-dark-100 text-white;
+  @apply dark:bg-app-light-100 dark:text-black;
 }
 
 @keyframes spin {
