@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Tooltip } from "react-tooltip"
 import Styles from "./Sidebar.module.css";
 
 interface SidebarMenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
@@ -15,7 +16,11 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
   const pathname = usePathname();
 
   return (
+    <>
     <li 
+      data-tooltip-id="my-tooltip" 
+      data-tooltip-content={title}
+    
       className={`
         ${Styles["dashboard-sidebar__menu-item"]}
         ${!enabled && Styles.disabled}
@@ -27,7 +32,6 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
         enabled ? (
           <Link
             href={href}
-            title={title}
             className="flex items-center justify-center"
           >
             <div className="flex justify-center flex-col items-center">  
@@ -50,6 +54,8 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
           </div>
         )
       }
-  </li>
+    </li>
+    <Tooltip id="my-tooltip" place="right" />
+  </>
   )
 }
