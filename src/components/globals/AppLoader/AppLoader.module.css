@@ -1,0 +1,29 @@
+.app-loader-loader {
+  @apply absolute top-0 left-0 w-full h-full;
+  @apply flex justify-center items-center flex-col;
+  @apply bg-black bg-opacity-70;
+  @apply z-[9999];
+  backdrop-filter: blur(8px);
+}
+
+.app-loader-loader__spinner {
+  @apply w-[50px] h-[50px];
+  @apply border-[10px] border-solid border-[#f3f3f3] rounded-full;
+  @apply border-t-app-primary;
+  @apply rounded-full;
+  animation: spin 0.7s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+}
+
+.app-loader-loader__text {
+  @apply text-white font-semibold mt-4 select-none;
+
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
