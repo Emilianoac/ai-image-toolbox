@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaWandMagicSparkles, FaDownload } from "react-icons/fa6";
 import { generateImage } from "@/actions/generateImageActions";
+import AppLoader from "@/components/globals/AppLoader/AppLoader";
 
 export default function GenerateImageClient() {
   const [formData, SetFormData] = useState({
@@ -133,9 +134,9 @@ export default function GenerateImageClient() {
         {error.show && <p className="text-sm text-center mt-3 text-red-500">{error.message}</p>}
       </form> 
 
-      <div className="flex justify-center items-center">
+      <div className="flex justify-center items-center relative min-h-[100px]">
 
-        {loading && <p className="text-sm text-center font-bold">Generando imagen...</p>}
+        {loading && <AppLoader includeBackground={false} text="Generando Imagen..."/>}
 
         { image && 
         <div className="flex gap-4 flex-col lg:flex-row">
