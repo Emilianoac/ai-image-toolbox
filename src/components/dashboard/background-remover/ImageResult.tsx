@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Styles from  "./ImageResult.module.css";
 import Image from "next/image";
 import ImageComparison from "./ImageComparison";
+import AppLoader from "@/components/globals/AppLoader/AppLoader";
 
 interface ImageComparisonProps {
   imageWithBg: string;
@@ -41,7 +42,7 @@ export default function ImageResult({ imageWithBg, imageWithoutBg }: ImageCompar
     calculateAspectRatio();
   }, [imageWithBg]);
 
-  
+
   return (
     <div className={`${Styles['result-container']}`}>
       { !imageWithoutBg ?
@@ -49,7 +50,7 @@ export default function ImageResult({ imageWithBg, imageWithoutBg }: ImageCompar
           { newWidth && newHeight &&
           <div className={`${Styles['result-loading']}`}>
             <Image src={imageWithBg} width={newWidth} height={newHeight} alt="Imagen original"/>
-            <p className={`${Styles['loading-text']}`}> Eliminando el fondo...</p>
+            <AppLoader text="Eliminando el fondo..." includeBackground={false} />
           </div>
 
           }

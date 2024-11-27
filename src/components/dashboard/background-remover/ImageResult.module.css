@@ -4,7 +4,6 @@
   .result-loading {
     @apply block overflow-hidden relative;
     backdrop-filter: blur(10px);
-
   }
 
   .result-loading:before {
