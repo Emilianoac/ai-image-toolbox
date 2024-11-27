@@ -3,13 +3,10 @@
 import { useState} from "react";
 import AddImage from "./AddImage";
 import FinalResult from "./FinalResult";
-import AppLoader from "@/components/globals/AppLoader/AppLoader";
-import Image from "next/image";
 
 export default function ImageTo3dClient() {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [result, setResult] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
   function reset() {
     setSelectedImage(null);
@@ -18,25 +15,12 @@ export default function ImageTo3dClient() {
 
   return (
     <>
-      {!result && !loading &&  (
+      {!result && (
         <AddImage 
           setResult={setResult} 
           setSelectedImage={setSelectedImage}
-          setLoading={setLoading}
+          selectedImage={selectedImage}
         />
-      )}
-
-      {loading && (
-        <div className="w-fit relative rounded-md overflow-hidden mx-auto">
-          <Image
-            src={selectedImage ? URL.createObjectURL(selectedImage) : ""}
-            width={400}
-            height={400}
-            alt="Imagen Original"
-            className="w-[400px] aspect-square object-cover"
-          />
-          <AppLoader text="Generando modelo 3D..." />
-        </div>
       )}
 
       {result && (
