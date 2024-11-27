@@ -11,6 +11,10 @@ const appMetaData = {
   generateImage: {
     title: "Generar Imágenes",
     description: `Genera imágenes con inteligencia artificial. ¡Prueba ahora y lleva tus imágenes al siguiente nivel!`,
+  },
+  imageTo3d: {
+    title: "Convertir imagenes a 3D",
+    description: `Convierte tus imágenes en modelos 3D. Explora la nueva dimensión de tus imagenes. ¡Prueba ahora!`,
   }
 
 }
