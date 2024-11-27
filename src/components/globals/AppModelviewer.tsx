@@ -32,6 +32,10 @@ function AppModelViewer({ src, alt, className, style, ...rest }: ModelViewerProp
         Object.keys(rest).forEach((key) => {
           (modelViewer as HTMLElement).setAttribute(key, (rest as Record<string, string | number | boolean>)[key].toString());
         });
+        // Asignar la clase manualmente
+        if (className) {
+          modelViewer.setAttribute("class", className);
+        }
       }
 
     }
@@ -42,7 +46,6 @@ function AppModelViewer({ src, alt, className, style, ...rest }: ModelViewerProp
       <model-viewer 
         src={src} 
         alt={alt}  
-        className={className ?? ""} 
         style={style ?? {}}
       />
     </div>
