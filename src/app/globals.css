@@ -16,7 +16,8 @@ input[type="email"],
 input[type="password"],
 input[type="number"],
 input[type="tel"],
-textarea {
+textarea,
+select {
   @apply block w-full px-3 py-2 rounded-lg;
   @apply text-sm;
   @apply bg-app-light-100 border border-app-light-200;
