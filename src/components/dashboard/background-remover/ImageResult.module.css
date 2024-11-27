@@ -5,13 +5,8 @@
     @apply block overflow-hidden relative;
     backdrop-filter: blur(10px);
 
-    .loading-text {
-      @apply text-white font-bold text-xl text-center select-none;
-      @apply absolute left-[50%] top-[50%] z-[20];
-      transform: translate(-50%, -50%);      
-    }
   }
-  
+
   .result-loading:before {
     @apply block absolute left-0 top-0 z-[2];
     @apply w-[100%] h-[10px];
@@ -28,6 +23,12 @@
     animation: pulse 1.8s ease-in-out infinite;
     backdrop-filter: blur(10px);
     background: linear-gradient(to top, rgba(0, 0, 0, 0.485), rgba(0, 0, 0, 0.227));
+  }
+
+  .loading-text {
+    @apply text-white font-bold text-xl text-center select-none;
+    @apply absolute left-[50%] top-[50%] z-[20];
+    transform: translate(-50%, -50%);      
   }
 }
 
