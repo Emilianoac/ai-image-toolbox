@@ -9,6 +9,11 @@ declare namespace JSX {
       'auto-rotate'?: boolean;
       autoplay?: boolean;
       style?: React.CSSProperties;
+      'environment-image'?: string;
+      'skybox-image'?: string;
+      'shadow-intensity'?: string;
+      'camera-orbit'?: string;
+      'max-camera-orbit'?: string;
     };
   }
 }
