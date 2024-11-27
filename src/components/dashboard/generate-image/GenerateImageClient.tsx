@@ -7,57 +7,63 @@ import { generateImage } from "@/actions/generateImageActions";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
 
 export default function GenerateImageClient() {
-  const [formData, SetFormData] = useState({
+  const [formData, setFormData] = useState({
     prompt: "",
     negative: "",
     steps: 10,
     seed: 0,
   });
   const [image, setImage] = useState("");
-  const [error, setError] = useState({
-    message: "",
-    show: false,
-  });
+  const [error, setError] = useState({ message: "", show: false });
   const [loading, setLoading] = useState(false);
 
   async function handeSubmit(event: React.FormEvent<HTMLFormElement>) {
-    if (!formData.prompt || loading) return;
+    event.preventDefault();
+    setLoading(true);
 
+    if (!formData.prompt || loading) return;
     setImage("");
     setError({ message: "", show: false });
-    setLoading(true);
-    event.preventDefault();
 
-    const data = new FormData();
-    data.append("prompt", formData.prompt);
-    data.append("negative", formData.negative);
-    data.append("steps", formData.steps.toString());
-    data.append("seed", formData.seed.toString());
+    const data = createFormData();
 
     try {
       const res = await generateImage(data);
-      setImage(res);
+
+      if (res.error) throw new Error(res.message);
+      if (!res.url) throw new Error("No se pudo obtener la imagen");
+
+      setImage(res.url);
 
     } catch (error) {
-      console.error("Error:", error);
-      setError({
-        message: error instanceof Error ? error.message : "An error occurred",
-        show: true,
-      });
+      handeSetError(error instanceof Error ? error.message : "Error al generar la imagen");
     } finally {
       setLoading(false);
     }
   };
 
-  function setFormData(key: string, value: string | number) {
-    SetFormData((prev) => ({ ...prev, [key]: value }));
-  }
+  function createFormData() {
+    const data = new FormData();
+    data.append("prompt", formData.prompt);
+    data.append("negative", formData.negative);
+    data.append("steps", formData.steps.toString());
+    data.append("seed", formData.seed.toString());
+    return data;
+  };
+
+  function handeFormData(key: string, value: string | number) {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  function handeSetError(message: string) {
+    setError({ message, show: true });
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[_400px_1fr] gap-3 w-full h-full">
       <form 
         onSubmit={handeSubmit}
-        className="app-card max-w-[450px] w-full mx-auto order-1 lg:order-first">
+        className="app-card max-w-[450px] w-full mx-auto order-1 lg:order-first h-fit">
         <h1 className="text-2xl font-bold mb-4 flex justify-between items-center">
           Crear nueva imagen
           <FaWandMagicSparkles/>
@@ -72,7 +78,7 @@ export default function GenerateImageClient() {
             name="prompt"
             placeholder="Escribe tu prompt aquí"
             value={formData.prompt}
-            onChange={(e) => setFormData("prompt", e.target.value)}
+            onChange={(e) => handeFormData("prompt", e.target.value)}
           >
           </textarea>
         </div>
@@ -86,7 +92,7 @@ export default function GenerateImageClient() {
             name="negative"
             placeholder="Escribe tu negative prompt aquí"
             value={formData.negative}
-            onChange={(e) => setFormData("negative", e.target.value)}
+            onChange={(e) => handeFormData("negative", e.target.value)}
           >
           </textarea>
         </div>
@@ -105,7 +111,7 @@ export default function GenerateImageClient() {
             max="30" 
             step="1"
             defaultValue={formData.steps}
-            onChange={(e) => setFormData("steps", parseInt(e.target.value))}
+            onChange={(e) => handeFormData("steps", parseInt(e.target.value))}
           />
           <div className="flex w-full justify-between mt-2 text-xs">
             <span>10</span>
@@ -121,17 +127,24 @@ export default function GenerateImageClient() {
             id="seed" 
             name="seed"
             defaultValue={formData.seed}
-            onChange={(e) => setFormData("seed", parseInt(e.target.value))}
+            onChange={(e) => handeFormData("seed", parseInt(e.target.value))}
           />
         </div>
 
         <button 
-          className="bg-app-primary text-white py-2 px-4 rounded-md mt-3 w-full font-semibold"
+          disabled={loading}
+          className="
+            bg-app-primary text-white 
+            py-2 px-4 rounded-md mt-3 
+            w-full 
+            font-semibold 
+            disabled:opacity-50 
+            disabled:cursor-not-allowed"
           type="submit">
             Generar Imagen
         </button>
 
-        {error.show && <p className="text-sm text-center mt-3 text-red-500">{error.message}</p>}
+        {error.show && <p className="text-center mt-3 text-red-500 text-xs">{error.message}</p>}
       </form> 
 
       <div className="flex justify-center items-center relative min-h-[100px]">

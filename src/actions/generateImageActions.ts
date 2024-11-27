@@ -52,10 +52,14 @@ export async function generateImage(data: FormData) {
     const base64 = responseJSON.artifacts[0].base64;
     const url = `data:image/png;base64,${base64}`;
 
-    return url;
+    return {
+      url: url,
+    }
 
-  } catch (error) {
-    console.error("Error:", error);
-    throw error
+  } catch {    
+    return {
+      error: true,
+      message: "Ocurrió un error al generar la imagen, por favor intenta de nuevo"
+    }
   }
 }
