@@ -3,6 +3,7 @@ import "./globals.css";
 import AppNavbar from "@/components/globals/AppNavbar";
 import { ThemeProvider } from "@/components/globals/ThemeProvider";
 import type { Metadata } from "next";
+import NextTopLoader from "nextjs-toploader";
 import appMetaData from "@/constants/meta-data";
 
 export const metadata: Metadata = {
@@ -31,8 +32,9 @@ export default function RootLayout({ children }: Readonly<Props>) {
           antialiased 
           bg-app-light-200 dark:bg-app-dark-200
           text-black dark:text-white
-        `
+          `
         }>
+        <NextTopLoader color="#ff3a8d" showSpinner={false}/>
         <ThemeProvider
           attribute="data-theme"
           defaultTheme="dark"
