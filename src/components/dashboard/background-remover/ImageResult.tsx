@@ -9,8 +9,8 @@ interface ImageComparisonProps {
 }
 
 export default function ImageResult({ imageWithBg, imageWithoutBg }: ImageComparisonProps) {
-  const [newWidth, setNewWidth] = useState(500);
-  const [newHeight, setNewHeight] = useState(500);
+  const [newWidth, setNewWidth] = useState<null | number>(null);
+  const [newHeight, setNewHeight] = useState<null | number>(null);
 
   useEffect(() => {
 
@@ -21,30 +21,45 @@ export default function ImageResult({ imageWithBg, imageWithoutBg }: ImageCompar
         const imgWidth = img.width;
         const imgHeight = img.height;
         const aspectRatio = imgWidth / imgHeight;
-        const newWidth = 600;
-        const newHeight = newWidth / aspectRatio;
+        
+        let newWidth, newHeight;
+    
+        if (imgHeight > 450) {
+          newHeight = 450;
+          newWidth = newHeight * aspectRatio;
+
+        } else {
+          newWidth = 450;
+          newHeight = newWidth / aspectRatio;
+        }
+    
         setNewWidth(newWidth);
         setNewHeight(newHeight);
       };
     }
 
     calculateAspectRatio();
-
   }, [imageWithBg]);
 
+  
   return (
     <div className={`${Styles['result-container']}`}>
       { !imageWithoutBg ?
-        <div className={`${Styles['result-loading']}`}>
-          <Image src={imageWithBg} width={newWidth} height={newHeight} alt="Imagen original"/>
-          <p className={`${Styles['loading-text']}`}> Eliminando el fondo...</p>
-        </div>
+        <>
+          { newWidth && newHeight &&
+          <div className={`${Styles['result-loading']}`}>
+            <Image src={imageWithBg} width={newWidth} height={newHeight} alt="Imagen original"/>
+            <p className={`${Styles['loading-text']}`}> Eliminando el fondo...</p>
+          </div>
+
+          }
+        </>
         :
         <ImageComparison  
           originalImage={imageWithBg}
           resultImage={imageWithoutBg}
-          width={newWidth}
-          height={newHeight}
+          width={newWidth ? newWidth : 400}
+          height={newHeight ? newHeight : 400}
         />
       }
     </div>
