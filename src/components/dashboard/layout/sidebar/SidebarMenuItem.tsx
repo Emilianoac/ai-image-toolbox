@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Tooltip } from "react-tooltip"
 import Styles from "./Sidebar.module.css";
+import { useEffect, useState } from "react";
 
 interface SidebarMenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
   title: string;
@@ -14,13 +15,28 @@ interface SidebarMenuItemProps extends React.HTMLAttributes<HTMLLIElement> {
 
 export default function SidebarMenuItem({href, title, children, enabled, ...props} : SidebarMenuItemProps) {
   const pathname = usePathname();
+  const [hideTooltip, setHideTooltip] = useState(false);
+
+  useEffect(() => {
+    if (window.innerWidth < 1024) setHideTooltip(true);
+
+    const handleResize = () => {
+      setHideTooltip(window.innerWidth < 1024 ? true : false);
+    }
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    }
+  }, []);
 
   return (
     <>
     <li 
       data-tooltip-id="my-tooltip" 
       data-tooltip-content={title}
-    
+      data-tooltip-hidden={hideTooltip}
+      data-tooltip-class-name="bg-red-500 text-white"
       className={`
         ${Styles["dashboard-sidebar__menu-item"]}
         ${!enabled && Styles.disabled}
@@ -55,7 +71,7 @@ export default function SidebarMenuItem({href, title, children, enabled, ...prop
         )
       }
     </li>
-    <Tooltip id="my-tooltip" place="right" />
+    <Tooltip id="my-tooltip" place="right"/>
   </>
   )
 }
