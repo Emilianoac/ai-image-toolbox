@@ -1,4 +1,4 @@
-import { useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import Styles from "./ImageComparison.module.css";
 import Image from "next/image";
 import { FaPlus, FaMinus } from "react-icons/fa";
@@ -18,27 +18,34 @@ export default function ImageComparison({
   resultImage = sampleResultImage, 
   width = 200, 
   height = 200
-}: ImageComparisonProps
-) {
+}: ImageComparisonProps) {
   const [sliderValue, setSliderValue] = useState(100);
+  const [imagesLoaded, setImagesLoaded] = useState(0);
 
   const handleSliderChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSliderValue(Number(event.target.value));
   };
 
   useEffect(() => {
+    if (imagesLoaded < 2) return;
+
     const interval = setInterval(() => {
       setSliderValue((prevValue) => {
         if (prevValue > 0) {
           return prevValue - 2;
         } else {
-          clearInterval(interval); 
+          clearInterval(interval);
           return prevValue;
         }
       });
-    }, 10); 
+    }, 10);
+    
     return () => clearInterval(interval);
-  }, []); 
+  }, [imagesLoaded]);
+
+  const handleImageLoad = () => {
+    setImagesLoaded((prevCount) => prevCount + 1);
+  };
 
   return (
     <div className="flex flex-col items-center">
@@ -48,13 +55,15 @@ export default function ImageComparison({
           width={width}
           height={width}
           src={originalImage}
+          onLoadingComplete={handleImageLoad}
           style={{ clipPath: `inset(0 ${100 - sliderValue}% 0 0)` }}
         />
         <Image 
           width={height}
           height={height}
-          alt="resultado"
-          src={resultImage} 
+          alt="Resultado"
+          src={resultImage}
+          onLoadingComplete={handleImageLoad}
           className={`${Styles['image-comparison__result']}`}
         />
       </div>
@@ -75,5 +84,5 @@ export default function ImageComparison({
         </span>
       </div>
     </div>
-  )
+  );
 }
