@@ -64,7 +64,7 @@ export default function AppDropdown({
             dropDirectionUp ? Styles['app-dropdown__list--up'] : ""
           }`}
         >
-          <span className="block font-bold text-xs px-4 mb-4 mt-3 select-none">{title}</span>
+          <span className="block font-bold text-xs px-4 mb-4 mt-3 select-none opacity-40">{title}</span>
           <ul>
             {items.map((item, i) => (
               <li
