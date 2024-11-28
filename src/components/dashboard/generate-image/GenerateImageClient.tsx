@@ -19,9 +19,13 @@ export default function GenerateImageClient() {
 
   async function handeSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setLoading(true);
+    
+    if (!formData.prompt || loading) {
+      handeSetError("El prompt es obligatorio");
+      return;
+    }
 
-    if (!formData.prompt || loading) return;
+    setLoading(true);
     setImage("");
     setError({ message: "", show: false });
 
