@@ -18,7 +18,7 @@
 .app-dropdown__item {
   @apply hover:bg-app-light-200;
   @apply block text-xs rounded-md;
-  @apply px-4 py-2 mb-2;
+  @apply px-4 py-2 mb-2 select-none;
 
   @apply cursor-pointer;
   @apply dark:hover:bg-app-dark-100;
