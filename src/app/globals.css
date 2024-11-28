@@ -56,7 +56,8 @@ input[type="range"] {
   @apply shadow-lg;
   @apply rounded-lg;
   @apply p-4;
-  @apply dark:bg-app-dark-200;
+  @apply border border-app-light-200;
+  @apply dark:bg-app-dark-200 dark:border-app-dark-300; ;
 }
 
 .action-button {
