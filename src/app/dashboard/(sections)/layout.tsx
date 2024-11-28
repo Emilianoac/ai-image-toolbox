@@ -13,7 +13,7 @@ export default function DashboardLayout({  children }: Readonly<DashboardLayoutP
     <div className={`${Styles['dashboard-layout']}`}>
       <Sidebar/>
       <main className={`${Styles['dashboard__main-container']}`}>
-        <GridPattern className="absolute top-0 left-0"/>
+        <GridPattern className="fixed top-0 left-0 w-full h-full"/>
         <div className={`${Styles['dashboard__main-content']}`}>
           {children}
         </div>

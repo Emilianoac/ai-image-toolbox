@@ -38,6 +38,7 @@ export default function GridPattern({ ...props }: GridPatternProps) {
         ctx.moveTo(x, 0);
         ctx.lineTo(x, canvasHeight);
         ctx.stroke();
+        ctx.globalAlpha = 0.3;
       }
 
       for (let y = 0; y <= canvasHeight; y += gridSize) {
@@ -45,7 +46,8 @@ export default function GridPattern({ ...props }: GridPatternProps) {
         ctx.moveTo(0, y);
         ctx.lineTo(canvasWidth, y);
         ctx.stroke();
-      }
+        ctx.globalAlpha = 0.3;
+      }      
     };
 
     resizeCanvas();
