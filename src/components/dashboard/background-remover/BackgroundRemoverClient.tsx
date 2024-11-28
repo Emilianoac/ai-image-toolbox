@@ -1,47 +1,26 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { removeBackground } from "@imgly/background-removal";
 import ImageResult from "./ImageResult";
 import UploadImage from "./UploadImage";
 import { FaDownload, FaTrash } from "react-icons/fa";
 import Styles from "./BackgroundRemoverClient.module.css";
+import { useAppStore } from "@/providers/app-state-provider";
 
 export default function BackgroundRemoverClient() {
-  const [user_image, setUserImage] = useState("");
-  const [result, setResult] = useState("");
 
-  useEffect(() => {
-    if (!user_image) return;
-    async function handleRemoveBackground() {
-      const result = await removeBackground(user_image);
-      const url = URL.createObjectURL(result);
-      setResult(url);
-    }
-
-    handleRemoveBackground();
-  }, [user_image])
+  const { removeBackgroundState, upadteRBResult, updateRBOriginalImage } = useAppStore((state) => state);
 
   function resetData() {
-    setUserImage("");
-    setResult("");
+    upadteRBResult(undefined);
+    updateRBOriginalImage(undefined);
   }
 
   return (
     <div className="flex flex-col md:flex-row gap-3">
-      { !user_image ?
-        <UploadImage setUserImage={setUserImage}/> : 
-        <ImageResult
-          imageWithBg={user_image} 
-          imageWithoutBg={result} 
-        />
-      }
+      { !removeBackgroundState.result ? <UploadImage/> : <ImageResult/> }
 
-      { result && 
-        <ActionsList 
-          result={result} 
-          resetData={() => resetData()} 
-        />
+      { removeBackgroundState.result && 
+        <ActionsList  result={removeBackgroundState.result}  resetData={resetData} />
       }
     </div>
   )
@@ -76,7 +55,3 @@ function ActionsList({ result, resetData }: ActionsListProps) {
     </ul>
   )
 }
-
-
-
-

@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/globals/ThemeProvider";
 import type { Metadata } from "next";
 import NextTopLoader from "nextjs-toploader";
 import appMetaData from "@/constants/meta-data";
+import { AppStoreProvider } from "@/providers/app-state-provider";
 
 export const metadata: Metadata = {
   title: {
@@ -35,15 +36,17 @@ export default function RootLayout({ children }: Readonly<Props>) {
           `
         }>
         <NextTopLoader color="#ff3a8d" showSpinner={false}/>
-        <ThemeProvider
-          attribute="data-theme"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <AppNavbar />
-          {children}
-        </ThemeProvider>
+          <ThemeProvider
+            attribute="data-theme"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+            >
+            <AppStoreProvider>
+              <AppNavbar />
+              {children}
+            </AppStoreProvider>
+          </ThemeProvider>
       </body>
     </html>
   );

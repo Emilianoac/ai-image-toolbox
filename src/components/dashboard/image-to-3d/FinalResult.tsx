@@ -1,23 +1,28 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useState} from "react";
 import Image from "next/image";
 import { FaLightbulb, FaDownload, FaArrowLeft } from "react-icons/fa";
 import AppDropdown from "@/components/globals/AppDropdown/AppDropdown";
 import { lights } from "@/constants/image-to-3d";
+import { useAppStore } from "@/providers/app-state-provider";
 
 const DynamicModelViewer = dynamic(() => import("@/components/globals/AppModelviewer"), { ssr: false });
 
-interface Result3DProps {
-  result: string;
-  originalImage: string;
-  reset: () => void;
-}
+export default function Result3D() {
+  const { 
+    imageTo3dState, 
+    update3dResult, 
+    updateCurrentLight,
+    updateOriginalImage 
+  } = useAppStore((state) => state);
 
-export default function Result3D({ result, originalImage, reset }: Result3DProps) {
-  const [currentLight, setCurrentLight] = useState(0);
+  const originalImage = imageTo3dState.originalImage ? URL.createObjectURL(imageTo3dState.originalImage) : "";
 
+  function reset() {
+    updateOriginalImage(undefined);
+    update3dResult(undefined);
+  }
   return (
     <>
       <div className="block lg:grid grid-cols-[700px_1fr] gap-8 p-4 mx-auto max-w-full">
@@ -35,22 +40,24 @@ export default function Result3D({ result, originalImage, reset }: Result3DProps
           </div>
           
           {/* Modelo 3D */}
-          <div className="flex items-start gap-2">
-            <div className="w-full">
-              <p className="text-sm font-bold mb-2">Modelo 3D</p>
-              <DynamicModelViewer
-                src={result}
-                alt="A 3D model"
-                environment-image={lights[currentLight].file}
-                camera-orbit="180deg 75deg 6m"
-                camera-controls
-                className="w-[290px] h-[290px] lg:w-[350px] lg:h-[350px] mx-auto rounded-md max-full"
-                style={{
-                  background: "radial-gradient(rgb(76, 71, 71), #212121, rgb(0, 0, 0))",
-                }}
-              />
+          {imageTo3dState.result &&
+            <div className="flex items-start gap-2">
+              <div className="w-full">
+                <p className="text-sm font-bold mb-2">Modelo 3D</p>
+                <DynamicModelViewer
+                  src={imageTo3dState.result}
+                  alt="A 3D model"
+                  environment-image={lights[imageTo3dState.currentLight].file}
+                  camera-orbit="180deg 75deg 6m"
+                  camera-controls
+                  className="w-[290px] h-[290px] lg:w-[350px] lg:h-[350px] mx-auto rounded-md max-full"
+                  style={{
+                    background: "radial-gradient(rgb(76, 71, 71), #212121, rgb(0, 0, 0))",
+                  }}
+                />
+              </div>
             </div>
-          </div>
+          }
         </div>
 
         {/* Acciones */}
@@ -67,7 +74,7 @@ export default function Result3D({ result, originalImage, reset }: Result3DProps
             <li>
               <a
                 title="Descargar Modelo 3D"
-                href={result}
+                href={imageTo3dState.result}
                 download={`3d-model.glb`}
                 className="action-button">
                   <FaDownload/>
@@ -77,8 +84,8 @@ export default function Result3D({ result, originalImage, reset }: Result3DProps
               <AppDropdown
                 items={lights.map((light) => light.name)}
                 title="Luces"
-                currentItem={currentLight}
-                selecItem={setCurrentLight}>
+                currentItem={imageTo3dState.currentLight}
+                selecItem={updateCurrentLight}>
                   <FaLightbulb/>
               </AppDropdown>
             </li>

@@ -10,3 +10,55 @@
   @apply px-4 py-2 rounded-md mx-auto cursor-pointer;
 
 }
+
+.result-container {
+  @apply rounded-md overflow-hidden;
+
+  .result-loading {
+    @apply block overflow-hidden relative;
+    backdrop-filter: blur(10px);
+  }
+
+  .result-loading:before {
+    @apply block absolute left-0 top-0 z-[2];
+    @apply w-[100%] h-[10px];
+    content:"";
+    background:linear-gradient(90deg,hsla(0,0%,100%,0) 0,hsla(0, 0%, 100%, 0.074));
+    animation:shine 1.5s ease-in-out infinite alternate-reverse;
+    filter: blur(10px);
+  }
+  
+  .result-loading::after {
+    @apply block absolute left-0 top-0;
+    @apply w-[100%] h-[100%];
+    content:"";
+    animation: pulse 1.8s ease-in-out infinite;
+    backdrop-filter: blur(10px);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.485), rgba(0, 0, 0, 0.227));
+  }
+
+  .loading-text {
+    @apply text-white font-bold text-xl text-center select-none;
+    @apply absolute left-[50%] top-[50%] z-[20];
+    transform: translate(-50%, -50%);      
+  }
+}
+
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes shine {
+  to {
+    top:200%
+  }
+}

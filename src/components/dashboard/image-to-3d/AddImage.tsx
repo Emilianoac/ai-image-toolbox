@@ -8,19 +8,21 @@ import { imageTo3d } from "@/actions/ImageTo3dActions";
 import Styles from "./ImageTo3dClient.module.css";
 import { FaUpload } from "react-icons/fa";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
+import { useAppStore } from "@/providers/app-state-provider";
 
 const DynamicModelViewer = dynamic(() => import("@/components/globals/AppModelviewer"), { ssr: false });
 
-interface AddImageProps {
-  setSelectedImage: (file: File) => void;
-  selectedImage: File | null;
-  setResult: (data: string) => void;
-}
+export default function AddImage() {
 
-export default function AddImage({setSelectedImage, setResult, selectedImage }: AddImageProps) {
+  const { 
+    update3dResult, 
+    updateOriginalImage, 
+    update3dLoading, 
+    imageTo3dState 
+  } = useAppStore((state) => state);
+
   const [currentExample, setCurrentExample] = useState(0);
-  const [error, setError] = useState({ error: false, message: "" });
-  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState({ error: false, message: ""});
 
   async function handle3dGeneration( event: React.ChangeEvent<HTMLInputElement> ) {
     setError({ error: false, message: "" });
@@ -31,8 +33,9 @@ export default function AddImage({setSelectedImage, setResult, selectedImage }: 
       return;
     }
 
-    setSelectedImage(file);
-    setLoading(true);
+    updateOriginalImage(file);
+    updateOriginalImage(file);
+    update3dLoading(true);
 
     const formData = new FormData();
     formData.append("image", file);
@@ -43,20 +46,20 @@ export default function AddImage({setSelectedImage, setResult, selectedImage }: 
       if (data.error) throw new Error(data.message);
       if (!data.url) throw new Error("No se pudo obtener el modelo 3D");
 
-      setResult(data.url);
+      update3dResult(data.url);
     } catch (error) {
       setError({
         error: true,
         message: error instanceof Error ? error.message : "Error al generar el modelo 3D"
       })
     } finally {
-      setLoading(false);
+      update3dLoading(false);
     }
   }
 
   return (
     <>
-      {!loading &&
+      {!imageTo3dState.loading &&
         <div className={`${Styles["add-image-container"]} app-card`}>
 
           {error.error && <p className="text-red-500 text-sm mb-2">{error.message}</p>}
@@ -126,7 +129,7 @@ export default function AddImage({setSelectedImage, setResult, selectedImage }: 
         </div> 
       }
 
-      {loading && <WaitingResult selectedImage={selectedImage} />}
+      {imageTo3dState.loading && <WaitingResult selectedImage={imageTo3dState.originalImage} />}
     </>
   );
 }

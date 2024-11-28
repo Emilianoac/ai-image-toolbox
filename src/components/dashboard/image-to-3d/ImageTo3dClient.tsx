@@ -1,35 +1,15 @@
 "use client";
 
-import { useState} from "react";
 import AddImage from "./AddImage";
 import FinalResult from "./FinalResult";
+import { useAppStore } from "@/providers/app-state-provider";
 
 export default function ImageTo3dClient() {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [result, setResult] = useState<string | null>(null);
-
-  function reset() {
-    setSelectedImage(null);
-    setResult(null);
-  }
+  const { imageTo3dState } = useAppStore((state) => state);
 
   return (
     <>
-      {!result && (
-        <AddImage 
-          setResult={setResult} 
-          setSelectedImage={setSelectedImage}
-          selectedImage={selectedImage}
-        />
-      )}
-
-      {result && (
-        <FinalResult 
-          result={result} 
-          originalImage={selectedImage ? URL.createObjectURL(selectedImage) : ""}
-          reset={reset}
-        />
-      )}
+      {!imageTo3dState.result ? <AddImage/> : <FinalResult/>}
     </>
   )
 }

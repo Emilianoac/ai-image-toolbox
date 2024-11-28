@@ -5,28 +5,29 @@ import { useState } from "react";
 import { FaWandMagicSparkles, FaDownload } from "react-icons/fa6";
 import { generateImage } from "@/actions/generateImageActions";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
+import { useAppStore } from "@/providers/app-state-provider";
 
 export default function GenerateImageClient() {
-  const [formData, setFormData] = useState({
-    prompt: "",
-    negative: "",
-    steps: 10,
-    seed: 0,
-  });
-  const [image, setImage] = useState("");
+
+  const { 
+    updateResult, 
+    updateFormData, 
+    updateLoading, 
+    generateImageState
+  } = useAppStore((state) => state);
+
+  const formData = generateImageState.formData;
   const [error, setError] = useState({ message: "", show: false });
-  const [loading, setLoading] = useState(false);
 
   async function handeSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     
-    if (!formData.prompt || loading) {
+    if (!formData.prompt || generateImageState.loading) {
       handeSetError("El prompt es obligatorio");
       return;
     }
-
-    setLoading(true);
-    setImage("");
+    
+    updateLoading(true);
     setError({ message: "", show: false });
 
     const data = createFormData();
@@ -37,12 +38,12 @@ export default function GenerateImageClient() {
       if (res.error) throw new Error(res.message);
       if (!res.url) throw new Error("No se pudo obtener la imagen");
 
-      setImage(res.url);
+      updateResult(res.url);
 
     } catch (error) {
       handeSetError(error instanceof Error ? error.message : "Error al generar la imagen");
     } finally {
-      setLoading(false);
+      updateLoading(false);
     }
   };
 
@@ -56,7 +57,7 @@ export default function GenerateImageClient() {
   };
 
   function handeFormData(key: string, value: string | number) {
-    setFormData((prev) => ({ ...prev, [key]: value }));
+    updateFormData({ ...formData, [key]: value });
   };
 
   function handeSetError(message: string) {
@@ -69,7 +70,7 @@ export default function GenerateImageClient() {
         onSubmit={handeSubmit}
         className="app-card max-w-[450px] w-full mx-auto order-1 lg:order-first h-fit">
         <h1 className="text-2xl font-bold mb-4 flex justify-between items-center">
-          Crear nueva imagen
+          Generar nueva imagen
           <FaWandMagicSparkles/>
         </h1>
 
@@ -136,7 +137,7 @@ export default function GenerateImageClient() {
         </div>
 
         <button 
-          disabled={loading}
+          disabled={generateImageState.loading}
           className="
             bg-app-primary text-white 
             py-2 px-4 rounded-md mt-3 
@@ -153,31 +154,33 @@ export default function GenerateImageClient() {
 
       <div className="flex justify-center items-center">
 
-        { image && 
-        <div className="flex gap-4 flex-col lg:flex-row">
-          <Image 
-            className="max-w-[500px] w-full h-auto rounded-md mx-auto"
-            src={image} 
-            alt="Imagen generada"
-            width={500}
-            height={500}
-          />
-          <ul>
-            <li>
-              <a 
-                href={image} 
-                title="Descargar imagen"
-                download={`result-${new Date().getTime()}.png`}
-                className="action-button">
-                  <FaDownload/>
-              </a>
-            </li>
-          </ul>
-        </div>
+        {!generateImageState.result && <p className="text-center opacity-40 font-semibold">Aún no se ha generado ninguna imagen</p>}
+
+        { generateImageState.result && 
+          <div className="flex gap-4 flex-col lg:flex-row">
+            <Image 
+              className="max-w-[500px] w-full h-auto rounded-md mx-auto"
+              src={ generateImageState.result} 
+              alt="Imagen generada"
+              width={500}
+              height={500}
+            />
+            <ul>
+              <li>
+                <a 
+                  href={ generateImageState.result} 
+                  title="Descargar imagen"
+                  download={`result-${new Date().getTime()}.png`}
+                  className="action-button">
+                    <FaDownload/>
+                </a>
+              </li>
+            </ul>
+          </div>
         }
       </div> 
 
-      {loading && 
+      { generateImageState.loading && 
         <AppLoader 
           className="!fixed"
           text="Generando Imagen..."
