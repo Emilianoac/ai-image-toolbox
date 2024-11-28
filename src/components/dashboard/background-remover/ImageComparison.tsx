@@ -48,8 +48,8 @@ export default function ImageComparison({
   };
 
   return (
-    <div className="flex flex-col items-center">
-      <div className={`${Styles['image-comparison-container']}`}>
+    <div className={`flex flex-col items-center`}>
+      <div className={`${Styles['image-comparison-container']} ${!imagesLoaded && "opacity-0"}`}>
         <Image
           alt="Original"
           width={width}
