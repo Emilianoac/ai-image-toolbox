@@ -4,11 +4,11 @@ import { useState, useRef, useEffect } from "react";
 import Styles from "./AppDropdown.module.css";
 
 interface AppDropdownProps extends React.HTMLAttributes<HTMLElement> {
-  "items": string[];
-  "title": string;
-  "selecItem": (item: number) => void;
-  "currentItem"?: number;
-  "children"?: React.ReactNode;
+  items: string[];
+  title: string;
+  selecItem: (item: number) => void;
+  currentItem?: number;
+  children?: React.ReactNode;
 }
 
 export default function AppDropdown({
@@ -19,7 +19,9 @@ export default function AppDropdown({
   currentItem,
 }: AppDropdownProps) {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [dropDirectionUp, setDropDirectionUp] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -29,13 +31,22 @@ export default function AppDropdown({
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  useEffect(() => {
+    if (showDropdown && dropdownRef.current && listRef.current) {
+      const dropdownRect = dropdownRef.current.getBoundingClientRect();
+      const listHeight = listRef.current.offsetHeight;
+      const availableSpaceBelow = window.innerHeight - dropdownRect.bottom;
+      
+      setDropDirectionUp(availableSpaceBelow < listHeight);
+    }
+  }, [showDropdown]);
+
   return (
     <div className={`${Styles['app-dropdown']}`} ref={dropdownRef}>
-      {/* Boton */}
+      {/* Botón */}
       <button
         title={title}
         className="action-button"
@@ -46,12 +57,20 @@ export default function AppDropdown({
       </button>
 
       {/* Dropdown */}
-      { showDropdown && 
-        <div className={`${Styles['app-dropdown__list']}`}>
-          <span className="block font-bold text-xs px-4 mb-4 mt-3">{title}</span>
+      {showDropdown && (
+        <div
+          ref={listRef}
+          className={`${Styles['app-dropdown__list']} ${
+            dropDirectionUp ? Styles['app-dropdown__list--up'] : ""
+          }`}
+        >
+          <span className="block font-bold text-xs px-4 mb-4 mt-3 select-none">{title}</span>
           <ul>
             {items.map((item, i) => (
-              <li className={` ${Styles['app-dropdown__item']} ${ currentItem === i && Styles.current }`}
+              <li
+                className={`${Styles['app-dropdown__item']} ${
+                  currentItem === i && Styles.current
+                }`}
                 onClick={() => selecItem(i)}
                 key={item}
               >
@@ -60,7 +79,7 @@ export default function AppDropdown({
             ))}
           </ul>
         </div>
-      }
+      )}
     </div>
   );
 }

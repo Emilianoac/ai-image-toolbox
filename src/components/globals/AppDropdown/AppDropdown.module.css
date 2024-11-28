@@ -3,11 +3,16 @@
 }
 
 .app-dropdown__list {
-  @apply absolute z-10 left-0 w-max;
+  @apply absolute z-[10000] left-0 w-max;
   @apply bg-app-light-100;
   @apply p-2 mt-1 rounded-md;
   @apply shadow-md;
   @apply dark:bg-app-dark-200;
+}
+
+.app-dropdown__list--up {
+  top: auto;
+  bottom: 100%;
 }
 
 .app-dropdown__item {
