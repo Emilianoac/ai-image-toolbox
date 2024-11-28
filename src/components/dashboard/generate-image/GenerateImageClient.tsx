@@ -60,7 +60,7 @@ export default function GenerateImageClient() {
   };
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-[_400px_1fr] gap-3 w-full h-full">
+    <div className="grid grid-cols-1 lg:grid-cols-[_400px_1fr] gap-3 w-full h-full relative">
       <form 
         onSubmit={handeSubmit}
         className="app-card max-w-[450px] w-full mx-auto order-1 lg:order-first h-fit">
@@ -147,9 +147,7 @@ export default function GenerateImageClient() {
         {error.show && <p className="text-center mt-3 text-red-500 text-xs">{error.message}</p>}
       </form> 
 
-      <div className="flex justify-center items-center relative min-h-[100px]">
-
-        {loading && <AppLoader includeBackground={false} text="Generando Imagen..."/>}
+      <div className="flex justify-center items-center">
 
         { image && 
         <div className="flex gap-4 flex-col lg:flex-row">
@@ -174,6 +172,14 @@ export default function GenerateImageClient() {
         </div>
         }
       </div> 
+
+      {loading && 
+        <AppLoader 
+          className="!fixed"
+          text="Generando Imagen..."
+        />
+      }
+
     </div>
   )
 }

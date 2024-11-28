@@ -1,8 +1,8 @@
 .app-loader-loader {
   @apply absolute top-0 left-0 w-full h-full;
   @apply flex justify-center items-center flex-col;
-  @apply bg-black bg-opacity-70;
-  @apply z-[9999];
+  @apply bg-black bg-opacity-30;
+  @apply z-[999];
   backdrop-filter: blur(8px);
 }
 

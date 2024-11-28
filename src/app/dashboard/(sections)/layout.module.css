@@ -1,0 +1,18 @@
+
+.dashboard-layout {
+  @apply block lg:grid grid-cols-[_50px_1fr] h-[calc(100vh-50px)];
+
+  .dashboard__main-container {
+    @apply h-auto lg:h-full;
+    @apply block lg:flex flex-col items-center justify-center;
+    @apply overflow-auto lg:overflow-hidden;
+    @apply p-4 pb-[100px] lg:pb-4;
+    @apply relative;
+  }
+
+  .dashboard__main-content {
+    @apply flex justify-center items-start lg:items-center;
+    @apply relative z-10;
+    @apply w-full h-full;
+  }
+}
