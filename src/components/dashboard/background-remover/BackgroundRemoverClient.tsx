@@ -1,7 +1,7 @@
 "use client";
 
-import ImageResult from "./ImageResult";
-import UploadImage from "./UploadImage";
+import ImageResult from "./image-result/ImageResult";
+import UploadImage from "./upload-image/UploadImage";
 import { FaDownload, FaTrash } from "react-icons/fa";
 import Styles from "./BackgroundRemoverClient.module.css";
 import { useAppStore } from "@/providers/app-state-provider";

@@ -1,4 +1,4 @@
-import ImageComparison from "./ImageComparison";
+import ImageComparison from "../image-comparison/ImageComparison";
 import { useAppStore } from "@/providers/app-state-provider";
 
 export default function ImageResult() {

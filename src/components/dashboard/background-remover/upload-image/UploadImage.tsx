@@ -6,7 +6,7 @@ import { removeBackground } from "@imgly/background-removal";
 import { FaUpload } from "react-icons/fa";
 import { examplesImages } from "@/constants/background-remover";
 import Styles from "./UploadImage.module.css";
-import ImageComparison from "./ImageComparison";
+import ImageComparison from "../image-comparison/ImageComparison";
 import { useAppStore } from "@/providers/app-state-provider";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
 
