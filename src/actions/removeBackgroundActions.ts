@@ -1,18 +1,30 @@
 "use server";
 
+import { removeBackgroundSchema } from "@/schemas/removeBackgroundSchemaBackend";
+
+
 export async function removeBackground(data: FormData) {
 
-  const image = data.get("image");
-  if (!image) throw new Error("El campo image es requerido");
-  
-  const formData = new FormData();
-  formData.append("image", image); 
-  formData.append("output_format", "webp");
+  const originalImage = data.get("image") as File;
+
+  const validatedParams =  await removeBackgroundSchema.safeParseAsync({ originalImage });
+  if (!validatedParams.success) {
+    const messages: string[] = [];
+    validatedParams.error.errors.map((error) => {
+      messages.push(error.message);
+    });
+    
+    return { error: true, validationMessages: messages };
+  }
+
 
   const apiKey = process.env.STABILITY_API_KEY;
   const endpoint = "https://api.stability.ai/v2beta/stable-image/edit/remove-background";
-
+  
   try {
+    const formData = new FormData();
+    formData.append("image", originalImage); 
+    formData.append("output_format", "webp");
 
     const response = await fetch(endpoint, {
       method: "POST",
@@ -37,6 +49,4 @@ export async function removeBackground(data: FormData) {
       message : "Error al procesar la imagen",
     }
   }
-
-
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { FaUpload } from "react-icons/fa";
 import { examplesImages } from "@/constants/background-remover";
@@ -9,8 +9,10 @@ import ImageComparison from "../image-comparison/ImageComparison";
 import { useAppStore } from "@/providers/app-state-provider";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
 import { removeBackground } from "@/actions/removeBackgroundActions";
+import { removeBackgroundSchema, RemoveBackgroundErrorSchema, RemoveBackgroundSchema } from "@/schemas/removeBackgroundSchema";
 
 export default function UploadImage() {
+  const [formErrors, setFormErrors] = useState<RemoveBackgroundErrorSchema | undefined>(undefined);
 
   const {
     removeBackgroundState, 
@@ -20,32 +22,35 @@ export default function UploadImage() {
     updateRBImageDimensions
   } = useAppStore(state => state);
 
-  async function loadImage(image: File | string) {
-    updateRBLoading(true);
-
+  async function loadImage(image: File | string) {  
     let file: File;
-    let image_src: string;
-
-    if (typeof image === "string") {
-      const response = await fetch(image);
-      const blob = await response.blob();
-      file = new File([blob], "example-image.webp", { type: "image/webp" });
-      image_src = URL.createObjectURL(file);
-    } else {
-      image_src = URL.createObjectURL(image);
-      file = image;
-    }
-
-    updateRBOriginalImage(image_src);
-
-    const data = new FormData();
-    data.append("image", file);
-
+    let originalimage: string;
+  
     try {
+      if (typeof image === "string") {
+        const response = await fetch(image);
+        const blob = await response.blob();
+        file = new File([blob], "example-image.webp", { type: "image/webp" });
+        originalimage = URL.createObjectURL(file);
+      } else {
+        const validate = await validateData({ originalImage: image });
+        if (!validate) {
+          updateRBLoading(false);
+          return; 
+        }
+        originalimage = URL.createObjectURL(image);
+        file = image;
+      }
+
+      updateRBLoading(true);
+      updateRBOriginalImage(originalimage);
+  
+      const data = new FormData();
+      data.append("image", file);
       const result = await removeBackground(data);
-
+  
       if (!result || typeof result !== "string") throw new Error("No se pudo eliminar el fondo de la imagen");
-
+  
       upadteRBResult(result);
     } catch (error) {
       console.error(error);
@@ -55,6 +60,7 @@ export default function UploadImage() {
       updateRBLoading(false);
     }
   }
+  
 
   function handleImageSelection(event: React.ChangeEvent<HTMLInputElement>) {
     if (!event.target.files) return;
@@ -62,6 +68,18 @@ export default function UploadImage() {
     loadImage(image);
   }
 
+  async function validateData(data: RemoveBackgroundSchema) {
+    const result = await removeBackgroundSchema.safeParseAsync(data);
+
+    if (!result.success) {
+      setFormErrors(result.error.format());
+      return false;
+    } else {
+      setFormErrors(undefined);
+      return true;
+    }
+  }
+  
   useEffect(() => {
     function calculateAspectRatio() {
       if (!removeBackgroundState.originalImage) return;
@@ -93,6 +111,11 @@ export default function UploadImage() {
     <>
       {!removeBackgroundState.loading && (
         <div className={`${Styles["upload-image-container"]} app-card`}>
+          {
+            formErrors?.originalImage?._errors.map((error, index) => (
+              <p className="text-red-500 text-sm mb-2" key={index}>- {error}</p>
+            ))
+          }
           <h1 className="text-xl md:text-2xl font-bold mb-8">
             Elimina el fondo de tus imagenes en segundos
           </h1>
@@ -100,7 +123,7 @@ export default function UploadImage() {
           <ImageComparison />
 
           <label
-            className={`${Styles["upload-image-label"]}`}
+            className={`${Styles["upload-image-label"]} mt-10`}
             htmlFor="user_image"
           >
             Añadir una imagen <FaUpload className="inline-block ml-2" />
@@ -109,10 +132,13 @@ export default function UploadImage() {
             type="file"
             name="user_image"
             id="user_image"
-            accept="image/*"
+            accept="image/webp, image/png, image/jpeg"
             className="hidden"
             onChange={handleImageSelection}
           />
+          <p className="opacity-60 mb-10 mt-2 text-xs">
+            Tamaño minimo: 300 x 300 Pixeles, Peso maximo: 2MB
+          </p>
 
           <span className="text-sm mb-3 block">¿Sin imagenes? prueba con una de estas.</span>
           <div className="grid grid-cols-6 gap-2 max-w-[400px] mx-auto">
