@@ -1,6 +1,6 @@
 import z from "zod";
 import sharp from "sharp";
-import { checkFileSize, checkFileType } from "./utils/indeX";
+import { checkFileSize, checkFileType } from "./utils/index";
 
 async function checkImageSize(file: Blob ){
   const maxWidth = 300;
