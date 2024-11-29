@@ -132,7 +132,7 @@ export default function AddImage() {
               onChange={(e) => handle3dGeneration(e)}
             />
             <p className="text-xs mt-2 mb-10 opacity-60">
-              Tamaño minimo: 300 x 200 Pixeles, Peso maximo: 2MB
+              Tamaño minimo: 300 x 300 Pixeles, Peso maximo: 2MB
             </p>
 
             <p className="text-center text-sm mb-2">Ejemplos</p>
