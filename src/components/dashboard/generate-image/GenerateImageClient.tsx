@@ -6,6 +6,7 @@ import { FaWandMagicSparkles, FaDownload } from "react-icons/fa6";
 import { generateImage } from "@/actions/generateImageActions";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
 import { useAppStore } from "@/providers/app-state-provider";
+import { generateImageSchema, GenerateImageSchema, GenerateImageErrorSchema } from "@/schemas/generateImageSchema";
 
 export default function GenerateImageClient() {
 
@@ -17,31 +18,25 @@ export default function GenerateImageClient() {
   } = useAppStore((state) => state);
 
   const formData = generateImageState.formData;
-  const [error, setError] = useState({ message: "", show: false });
+  const [formError, setFormError] = useState<GenerateImageErrorSchema | undefined>(undefined);
+  const [error, setError] = useState({ messages: [] as string[], show: false });
 
   async function handeSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    
-    if (!formData.prompt || generateImageState.loading) {
-      handeSetError("El prompt es obligatorio");
-      return;
-    }
+    if (!validateFormData(formData)) return;
     
     updateLoading(true);
-    setError({ message: "", show: false });
+    setError({ messages: [], show: false });
 
     const data = createFormData();
-
     try {
       const res = await generateImage(data);
+      const imageUrl = validateResponse(res);
 
-      if (res.error) throw new Error(res.message);
-      if (!res.url) throw new Error("No se pudo obtener la imagen");
-
-      updateResult(res.url);
+      updateResult(imageUrl);
 
     } catch (error) {
-      handeSetError(error instanceof Error ? error.message : "Error al generar la imagen");
+      handleSetError(error);
     } finally {
       updateLoading(false);
     }
@@ -60,10 +55,46 @@ export default function GenerateImageClient() {
     updateFormData({ ...formData, [key]: value });
   };
 
-  function handeSetError(message: string) {
-    setError({ message, show: true });
+  function validateFormData(data: GenerateImageSchema) {
+    const validSchema = generateImageSchema.safeParse(data);
+
+    if (!validSchema.success)  {
+      setFormError(validSchema.error.format());
+      return false;
+    } else {
+      setFormError(undefined);
+      return true;
+    }
   };
 
+  function validateResponse(res: any) {
+    if (res.error && res.validationMessages) {
+      throw new Error(res.validationMessages.join(", "), { cause: "validation" });
+    }
+    if (res.error && res.generalMessage) {
+      throw new Error(res.generalMessage, { cause: "general" });
+    }
+    if (!res.url) {
+      throw new Error("No se pudo obtener la imagen");
+    }
+    return res.url;
+  }
+
+  function handleSetError(error: unknown) {
+    let message = "Error inesperado al procesar la solicitud";
+    let cause = "general";
+  
+    if (error instanceof Error) {
+      message = error.message;
+      cause = typeof error.cause === "string" ? error.cause : "general";
+    }
+  
+    const messagesArray =
+      cause === "validation" ? message.split(", ") : ["Error al generar la imagen"];
+    
+    setError({ messages: messagesArray, show: true });
+  }
+  
   return (
     <div className="grid grid-cols-1 lg:grid-cols-[_400px_1fr] gap-3 w-full h-full relative">
       <form 
@@ -86,6 +117,11 @@ export default function GenerateImageClient() {
             onChange={(e) => handeFormData("prompt", e.target.value)}
           >
           </textarea>
+          {formError?.prompt &&
+            formError.prompt._errors.map((error, index) => (
+              <p key={index} className="text-red-500 text-xs mt-1">{error}</p>
+            ))
+          }
         </div>
 
         {/* Negative Prompt */}
@@ -100,6 +136,11 @@ export default function GenerateImageClient() {
             onChange={(e) => handeFormData("negative", e.target.value)}
           >
           </textarea>
+          {formError?.negative &&
+            formError.negative._errors.map((error, index) => (
+              <p key={index} className="text-red-500 text-xs mt-1">{error}</p>
+            ))
+          }
         </div>
 
         {/* Steps */}
@@ -122,6 +163,11 @@ export default function GenerateImageClient() {
             <span>10</span>
             <span>30</span>
           </div>
+          {formError?.steps &&
+            formError.steps._errors.map((error, index) => (
+              <p key={index} className="text-red-500 text-xs mt-1">{error}</p>
+            ))
+          }
         </div>
 
         {/* Seed */}
@@ -134,6 +180,11 @@ export default function GenerateImageClient() {
             defaultValue={formData.seed}
             onChange={(e) => handeFormData("seed", parseInt(e.target.value))}
           />
+          {formError?.seed &&
+            formError.seed._errors.map((error, index) => (
+              <p key={index} className="text-red-500 text-xs mt-1">{error}</p>
+            ))
+          }
         </div>
 
         <button 
@@ -144,12 +195,18 @@ export default function GenerateImageClient() {
             w-full 
             font-semibold 
             disabled:opacity-50 
-            disabled:cursor-not-allowed"
+            disabled:cursor-not-allowed
+            hover:opacity-90
+          "
           type="submit">
             Generar Imagen
         </button>
 
-        {error.show && <p className="text-center mt-3 text-red-500 text-xs">{error.message}</p>}
+        {error.show && 
+          error.messages.map((message, index) => (
+            <p key={index} className="text-red-500 text-xs mt-1">- {message}</p>
+          ))
+        }
       </form> 
 
       <div className="flex justify-center items-center">
