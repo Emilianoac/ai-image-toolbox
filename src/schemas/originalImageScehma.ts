@@ -16,7 +16,7 @@ async function checkImageSize(file: Blob ){
   });
 }
 
-export const removeBackgroundSchema = z.object({
+export const originalImageSchema = z.object({
   originalImage: z
     .instanceof(Blob,{ message: "La imagen es requerida" })
     .refine((value) => checkFileType(value, ["webp", "png", "jpeg"]), { message: "Tipo de archivo inválido"})
@@ -24,5 +24,6 @@ export const removeBackgroundSchema = z.object({
     .refine((value) => checkFileSize(value, 2), { message: "El peso de la imagen debe ser menor a 2MB" }),
 });
 
-export type RemoveBackgroundSchema = z.infer<typeof removeBackgroundSchema>;
-export type RemoveBackgroundErrorSchema = z.ZodFormattedError<RemoveBackgroundSchema>;
+
+export type OriginalImageSchema = z.infer<typeof originalImageSchema>;
+export type OriginalImageErrorSchema = z.ZodFormattedError<OriginalImageSchema>;

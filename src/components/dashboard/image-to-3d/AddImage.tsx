@@ -9,6 +9,7 @@ import Styles from "./ImageTo3dClient.module.css";
 import { FaUpload } from "react-icons/fa";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
 import { useAppStore } from "@/providers/app-state-provider";
+import { originalImageSchema, OriginalImageSchema , OriginalImageErrorSchema } from "@/schemas/originalImageScehma";
 
 const DynamicModelViewer = dynamic(() => import("@/components/globals/AppModelviewer"), { ssr: false });
 
@@ -22,6 +23,7 @@ export default function AddImage() {
   } = useAppStore((state) => state);
 
   const [currentExample, setCurrentExample] = useState(0);
+  const [formErrors, setFormErrors] = useState<OriginalImageErrorSchema | undefined>(undefined);
   const [error, setError] = useState({ error: false, message: ""});
 
   async function handle3dGeneration( event: React.ChangeEvent<HTMLInputElement> ) {
@@ -32,6 +34,9 @@ export default function AddImage() {
       setError({ error: true, message: "No se ha seleccionado una imagen" });
       return;
     }
+
+    const validate = await validateData({ originalImage: file });
+    if (!validate) return;
 
     updateOriginalImage(file);
     updateOriginalImage(file);
@@ -57,12 +62,32 @@ export default function AddImage() {
     }
   }
 
+  async function validateData(data: OriginalImageSchema ) {
+    const result = await originalImageSchema.safeParseAsync(data);
+  
+    if (!result.success) {
+      setFormErrors(result.error.format());
+      return false;
+    } else {
+      setFormErrors(undefined);
+      return true;
+    }
+
+  }
+
   return (
     <>
       {!imageTo3dState.loading &&
         <div className={`${Styles["add-image-container"]} app-card`}>
 
           {error.error && <p className="text-red-500 text-sm mb-2">{error.message}</p>}
+
+
+          {formErrors?.originalImage &&
+            formErrors.originalImage._errors.map((error, index) => (
+              <p className="text-red-500 text-sm mb-2" key={index}>- {error}</p>
+            ))
+          }
 
           <div>
             <h1 className="font-bold text-xl lg:text-2xl mb-4">
@@ -95,17 +120,20 @@ export default function AddImage() {
               />
             </div>
 
-            <label className={`${Styles["add-image-label"]}`} htmlFor="user-image">
+            <label className={`${Styles["add-image-label"]} mt-10`} htmlFor="user-image">
               Añadir una imagen <FaUpload className="ms-2"/>
             </label>
             <input
               id="user-image"
               type="file"
-              accept="image/*"
+              accept="image/webp, image/png, image/jpeg"
               hidden
               multiple={false}
               onChange={(e) => handle3dGeneration(e)}
             />
+            <p className="text-xs mt-2 mb-10 opacity-60">
+              Tamaño minimo: 300 x 200 Pixeles, Peso maximo: 2MB
+            </p>
 
             <p className="text-center text-sm mb-2">Ejemplos</p>
             <ul className="grid grid-cols-4 gap-4 max-w-[300px] mx-auto">

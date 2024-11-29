@@ -1,18 +1,27 @@
 "use server";
 
+import { originalImageSchema } from "@/schemas/originalImageSchemaBackend";
+
 export async function imageTo3d(data: FormData) {
 
+  const originalImage = data.get("image") as File;
+
+  const validatedParams =  await originalImageSchema.safeParseAsync({ originalImage });
+  if (!validatedParams.success) {
+    const messages: string[] = [];
+    validatedParams.error.errors.map((error) => {
+      messages.push(error.message);
+    });
+    
+    return { error: true, validationMessages: messages };
+  }
+
   try {
-    const image = data.get("image");
-  
-    if (!image) throw new Error("El campo image es requerido");
-    if (!(image instanceof Blob)) throw new Error("El campo image debe ser un archivo");
-  
     const apiKey = process.env.STABILITY_API_KEY;
     const endpoint = "https://api.stability.ai/v2beta/3d/stable-fast-3d";
   
     const formData = new FormData();
-    formData.append("image", image); 
+    formData.append("image", originalImage); 
 
     const response = await fetch(endpoint, {
       method: "POST",

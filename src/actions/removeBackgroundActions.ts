@@ -1,13 +1,13 @@
 "use server";
 
-import { removeBackgroundSchema } from "@/schemas/removeBackgroundSchemaBackend";
+import { originalImageSchema } from "@/schemas/originalImageSchemaBackend";
 
 
 export async function removeBackground(data: FormData) {
 
   const originalImage = data.get("image") as File;
 
-  const validatedParams =  await removeBackgroundSchema.safeParseAsync({ originalImage });
+  const validatedParams =  await originalImageSchema.safeParseAsync({ originalImage });
   if (!validatedParams.success) {
     const messages: string[] = [];
     validatedParams.error.errors.map((error) => {

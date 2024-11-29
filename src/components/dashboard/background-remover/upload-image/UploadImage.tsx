@@ -9,10 +9,10 @@ import ImageComparison from "../image-comparison/ImageComparison";
 import { useAppStore } from "@/providers/app-state-provider";
 import AppLoader from "@/components/globals/AppLoader/AppLoader";
 import { removeBackground } from "@/actions/removeBackgroundActions";
-import { removeBackgroundSchema, RemoveBackgroundErrorSchema, RemoveBackgroundSchema } from "@/schemas/removeBackgroundSchema";
+import { originalImageSchema, OriginalImageSchema, OriginalImageErrorSchema } from "@/schemas/originalImageScehma";
 
 export default function UploadImage() {
-  const [formErrors, setFormErrors] = useState<RemoveBackgroundErrorSchema | undefined>(undefined);
+  const [formErrors, setFormErrors] = useState<OriginalImageErrorSchema | undefined>(undefined);
 
   const {
     removeBackgroundState, 
@@ -68,8 +68,8 @@ export default function UploadImage() {
     loadImage(image);
   }
 
-  async function validateData(data: RemoveBackgroundSchema) {
-    const result = await removeBackgroundSchema.safeParseAsync(data);
+  async function validateData(data: OriginalImageSchema) {
+    const result = await originalImageSchema.safeParseAsync(data);
 
     if (!result.success) {
       setFormErrors(result.error.format());
