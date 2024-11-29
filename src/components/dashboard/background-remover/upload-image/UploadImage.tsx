@@ -43,6 +43,9 @@ export default function UploadImage() {
 
     try {
       const result = await removeBackground(data);
+
+      if (!result || typeof result !== "string") throw new Error("No se pudo eliminar el fondo de la imagen");
+
       upadteRBResult(result);
     } catch (error) {
       console.error(error);
